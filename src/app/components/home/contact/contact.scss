@@ -30,3 +30,44 @@
   font-size: 0.78rem;
   color: #f85149;
 }
+
+/* Honeypot — completely hidden, not interactable by real users */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  tab-index: -1;
+}
+
+/* Character counter */
+.field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  label { /* inherits existing label styles */ }
+}
+
+.char-count {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  color: var(--color-text-muted);
+  transition: color 0.2s;
+  &.warn { color: #f78c6c; }
+}
+
+/* Rate-limit note */
+.form-note {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  margin-top: -0.25rem;
+  svg { flex-shrink: 0; opacity: 0.6; }
+}

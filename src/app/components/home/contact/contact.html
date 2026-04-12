@@ -37,22 +37,47 @@
           <div class="form-card">
             <div class="form-header"><span class="mono-accent">$</span> send_message.sh</div>
             <div class="form-body">
+
+              <!-- Honeypot: hidden from humans, bots will fill it -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" type="text" name="website" tabindex="-1" autocomplete="off" [(ngModel)]="honeypot" />
+              </div>
+
               <div class="field">
                 <label for="name">Name</label>
-                <input id="name" type="text" placeholder="Your name" [(ngModel)]="formData.name" [disabled]="state() === 'sending'" />
+                <input id="name" type="text" placeholder="Your name"
+                  [(ngModel)]="formData.name"
+                  [disabled]="state() === 'sending'"
+                  autocomplete="name" maxlength="100" />
               </div>
+
               <div class="field">
                 <label for="email">Email</label>
-                <input id="email" type="email" placeholder="your@email.com" [(ngModel)]="formData.email" [disabled]="state() === 'sending'" />
+                <input id="email" type="email" placeholder="your@email.com"
+                  [(ngModel)]="formData.email"
+                  [disabled]="state() === 'sending'"
+                  autocomplete="email" />
               </div>
+
               <div class="field">
-                <label for="message">Message</label>
-                <textarea id="message" rows="5" placeholder="Tell me about your project..." [(ngModel)]="formData.message" [disabled]="state() === 'sending'"></textarea>
+                <div class="field-header">
+                  <label for="message">Message</label>
+                  <span class="char-count" [class.warn]="formData.message.length > 4500">
+                    {{ formData.message.length }} / 5000
+                  </span>
+                </div>
+                <textarea id="message" rows="5" placeholder="Tell me about your project..."
+                  [(ngModel)]="formData.message"
+                  [disabled]="state() === 'sending'"
+                  maxlength="5000"></textarea>
               </div>
 
               @if (state() === 'error') {
                 <div class="error-banner">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                  </svg>
                   {{ errorMsg() }}
                 </div>
               }
@@ -62,9 +87,19 @@
                   <span class="spinner"></span> Sending...
                 } @else {
                   Send Message
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
                 }
               </button>
+
+              <p class="form-note">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                </svg>
+                Max 3 messages per hour · Your IP is logged
+              </p>
+
             </div>
           </div>
         }

@@ -13,14 +13,17 @@ type FormState = 'idle' | 'sending' | 'success' | 'error';
 })
 export class ContactComponent {
   formData = { name: '', email: '', message: '' };
-  state = signal<FormState>('idle');
+  // Honeypot — intentionally not bound to a visible field
+  honeypot = ''; // honeypot — bots fill this, humans don't
+
+  state    = signal<FormState>('idle');
   errorMsg = signal('');
 
   links = [
-    { label: 'GitHub',   href: 'https://github.com/azizdridi44',          handle: '@azizdridi44',            icon: 'github'   },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/aziz-dridi',       handle: 'aziz-dridi',              icon: 'linkedin' },
-    { label: 'Email',    href: 'mailto:azizdridi44@gmail.com',             handle: 'azizdridi44@gmail.com',   icon: 'mail'     },
-    { label: 'Location', href: '#',                                         handle: 'Tunis, Tunisia',          icon: 'location' },
+    { label: 'GitHub',   href: 'https://github.com/scriptsl0th',        handle: '@scriptsl0th',          icon: 'github'   },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/dridi-aziz',     handle: 'Aziz Dridi',            icon: 'linkedin' },
+    { label: 'Email',    href: 'mailto:dridiaziz28@gmail.com',           handle: 'dridiaziz28@gmail.com', icon: 'mail'     },
+    { label: 'Location', href: '#',                                       handle: 'Tunis, Tunisia',        icon: 'location' },
   ];
 
   async onSubmit(): Promise<void> {
@@ -34,10 +37,21 @@ export class ContactComponent {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({
+          name:    name.trim(),
+          email:   email.trim(),
+          message: message.trim(),
+          website: this.honeypot, // honeypot — always empty for real users
+        }),
       });
 
       const body = await res.json();
+
+      if (res.status === 429) {
+        this.errorMsg.set('Slow down — max 3 messages per hour.');
+        this.state.set('error');
+        return;
+      }
 
       if (!res.ok) {
         this.errorMsg.set(body.error ?? 'Something went wrong.');

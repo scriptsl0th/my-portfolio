@@ -11,7 +11,7 @@ export class GithubApiService {
 
   async fetchStats(): Promise<void> {
     try {
-      const res = await fetch('https://api.github.com/users/azizdridi44');
+      const res = await fetch('https://api.github.com/users/scriptsl0th');
       if (res.ok) {
         const data = await res.json();
         this.stats.set({ followers: data.followers ?? 0, repos: data.public_repos ?? 0 });
