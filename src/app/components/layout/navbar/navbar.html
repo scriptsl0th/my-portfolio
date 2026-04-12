@@ -1,0 +1,38 @@
+<nav class="navbar" [class.scrolled]="isScrolled()">
+  <div class="container">
+    <div class="nav-inner">
+
+      <a class="logo" (click)="navigate('#hero')" role="button">
+        <span class="bracket">&#91;</span>AD<span class="bracket">&#93;</span>
+      </a>
+
+      <ul class="nav-links">
+        @for (link of navLinks; track link.href; let i = $index) {
+          <li>
+            <a (click)="navigate(link.href)" role="button">
+              <span class="idx">0{{ i + 1 }}.</span>{{ link.label }}
+            </a>
+          </li>
+        }
+        <li><a href="mailto:azizdridi44@gmail.com" class="cta">Hire Me</a></li>
+      </ul>
+
+      <div class="nav-right">
+        <app-now-playing />
+        <button class="hamburger" (click)="isMenuOpen.set(!isMenuOpen())" [class.open]="isMenuOpen()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mobile-menu" [class.open]="isMenuOpen()">
+    <ul>
+      @for (link of navLinks; track link.href; let i = $index) {
+        <li><a (click)="navigate(link.href)" role="button"><span class="idx">0{{ i + 1 }}.</span>{{ link.label }}</a></li>
+      }
+      <li><a href="mailto:azizdridi44@gmail.com" class="cta">Hire Me</a></li>
+    </ul>
+  </div>
+</nav>

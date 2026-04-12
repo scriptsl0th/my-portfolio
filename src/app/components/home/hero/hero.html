@@ -1,0 +1,101 @@
+<section class="hero" id="hero">
+  <div class="hero-grid-overlay"></div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-top fade-in">
+        <span class="greeting"><span class="mono-accent">$ </span>Hello, world!</span>
+      </div>
+
+      <h1 class="hero-name fade-in">
+        Aziz<br /><span class="accent">Dridi</span>
+      </h1>
+
+      <div class="hero-role fade-in">
+        <span class="role-prefix">I'm a </span>
+        <span class="typed">{{ typedText }}</span><span class="cursor" [class.hide]="!showCursor">|</span>
+      </div>
+
+      <p class="hero-desc fade-in">
+        Backend Engineer from Tunisia with 2+ years of experience designing scalable
+        platforms, distributed systems &amp; cloud infrastructure.
+        Delivered solutions serving <span class="accent">1,000+ users</span>.
+      </p>
+
+      <div class="hero-actions fade-in">
+        <button class="btn-primary" (click)="scrollTo('#contact')">
+          Get In Touch
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+        <button class="btn-ghost" (click)="scrollTo('#experience')">View Work</button>
+      </div>
+
+      <div class="hero-meta fade-in">
+        <span class="meta-item">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Tunis, Tunisia
+        </span>
+        <span class="meta-sep">·</span>
+        <span class="meta-item available"><span class="dot"></span>Open to opportunities</span>
+      </div>
+    </div>
+
+    <!-- Code Card -->
+    <div class="hero-code fade-in">
+      <div class="code-window">
+        <div class="code-header">
+          <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+          <span class="code-filename">developer.ts</span>
+        </div>
+        <pre class="code-body"><code><span class="kw">interface</span> <span class="type">Developer</span> &#123;
+  name<span class="op">:</span>       <span class="str">'Aziz Dridi'</span>;
+  role<span class="op">:</span>       <span class="str">'Backend Engineer'</span>;
+  experience<span class="op">:</span> <span class="num">2</span><span class="op">+</span> <span class="str">'years'</span>;
+  location<span class="op">:</span>   <span class="str">'Tunisia'</span>;
+  languages<span class="op">:</span>  [
+    <span class="str">'Python'</span><span class="op">,</span> <span class="str">'Java'</span><span class="op">,</span>
+    <span class="str">'TypeScript'</span><span class="op">,</span> <span class="str">'JS'</span>
+  ];
+  frameworks<span class="op">:</span> [
+    <span class="str">'Django'</span><span class="op">,</span> <span class="str">'Spring Boot'</span><span class="op">,</span>
+    <span class="str">'Angular'</span><span class="op">,</span> <span class="str">'React'</span>
+  ];
+  cloud<span class="op">:</span>      [
+    <span class="str">'Docker'</span><span class="op">,</span> <span class="str">'Kubernetes'</span><span class="op">,</span>
+    <span class="str">'Kafka'</span><span class="op">,</span> <span class="str">'Redis'</span>
+  ];
+  os<span class="op">:</span>         [</code></pre>
+
+        <!-- Clickable OS badges -->
+        <div class="os-line">
+          <span class="os-indent">    </span>
+          @for (os of osList; track os.name; let last = $last) {
+            <button class="os-badge" (click)="openOs(os)" [style.--os-color]="os.color" [title]="'Click to explore ' + os.label">
+              <span class="os-dot"></span>
+              <span class="str">'{{ os.label }}'</span>
+              <span class="os-hint">↗</span>
+            </button>
+            @if (!last) { <span class="op">, </span> }
+          }
+        </div>
+
+        <pre class="code-body code-tail"><code>  ];
+  impact<span class="op">:</span>     <span class="str">'1000+ users served'</span>;
+&#125;
+
+<span class="comment">// Building scalable solutions</span>
+<span class="comment">// Ready for your next project? |</span></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" (click)="scrollTo('#about')">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Terminal modal -->
+@if (activeOs()) {
+  <app-terminal-modal [os]="activeOs()!" (close)="closeOs()" />
+}

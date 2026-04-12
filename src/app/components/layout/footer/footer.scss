@@ -1,0 +1,14 @@
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding: 2rem 0;
+  background: var(--color-bg-secondary);
+}
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.footer-left { display: flex; align-items: center; gap: 1.25rem; }
+.footer-logo { font-family: var(--font-mono); font-size: 1rem; font-weight: 500; }
+.footer-copy { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); }
+.footer-note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--color-text-muted); }
+.footer-links { display: flex; gap: 1rem; align-items: center;
+  a { color: var(--color-text-muted); transition: var(--transition); &:hover { color: var(--color-accent); } }
+}
+@media (max-width: 640px) { .footer-note { display: none; } }

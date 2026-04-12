@@ -1,0 +1,45 @@
+<nav class="navbar" [class.scrolled]="isScrolled">
+  <div class="container">
+    <div class="nav-inner">
+      <a class="logo" (click)="navigate('#hero')" role="button">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">AD</span>
+        <span class="logo-bracket">]</span>
+      </a>
+
+      <ul class="nav-links">
+        @for (link of navLinks; track link.href) {
+          <li>
+            <a (click)="navigate(link.href)" role="button">
+              <span class="link-index">0{{ $index + 1 }}.</span>
+              {{ link.label }}
+            </a>
+          </li>
+        }
+        <li>
+          <a href="mailto:azizdridi44@gmail.com" class="nav-cta">Hire Me</a>
+        </li>
+      </ul>
+
+      <button class="menu-toggle" (click)="toggleMenu()" [class.open]="isMenuOpen" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" [class.open]="isMenuOpen">
+    <ul>
+      @for (link of navLinks; track link.href) {
+        <li>
+          <a (click)="navigate(link.href)" role="button">
+            <span class="link-index">0{{ $index + 1 }}.</span>
+            {{ link.label }}
+          </a>
+        </li>
+      }
+      <li><a href="mailto:azizdridi44@gmail.com" class="nav-cta">Hire Me</a></li>
+    </ul>
+  </div>
+</nav>

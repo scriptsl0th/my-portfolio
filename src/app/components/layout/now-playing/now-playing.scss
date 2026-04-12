@@ -1,0 +1,171 @@
+.now-playing {
+  position: relative;
+}
+
+/* ── Shared card shell ── */
+.np-card {
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  transition: var(--transition);
+  overflow: hidden;
+
+  &.playing {
+    gap: 0;
+    border-radius: var(--radius-lg);
+    border-color: rgba(29, 185, 84, 0.2);
+    padding: 0.5rem 0.75rem 0.5rem 0.5rem;
+    gap: 0.65rem;
+    max-width: 230px;
+
+    &:hover { border-color: rgba(29, 185, 84, 0.45); }
+  }
+
+  &.idle {
+    gap: 0.45rem;
+    padding: 0.35rem 0.85rem 0.35rem 0.6rem;
+    border-radius: 999px;
+  }
+}
+
+/* ── Album art with animated bars overlay ── */
+.np-art-wrap {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.np-art {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bars-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+
+  span {
+    display: block;
+    width: 3px;
+    background: #1db954;
+    border-radius: 2px;
+    animation: bar 1.2s ease-in-out infinite;
+
+    &:nth-child(1) { height: 6px;  animation-delay: 0s; }
+    &:nth-child(2) { height: 12px; animation-delay: 0.2s; }
+    &:nth-child(3) { height: 8px;  animation-delay: 0.35s; }
+    &:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+  }
+}
+
+@keyframes bar {
+  0%, 100% { transform: scaleY(0.35); }
+  50%       { transform: scaleY(1); }
+}
+
+/* ── Info column ── */
+.np-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0; /* allow text truncation */
+  flex: 1;
+}
+
+.np-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #1db954;
+}
+
+.spotify-logo { flex-shrink: 0; }
+
+.np-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  line-height: 1.2;
+  transition: var(--transition);
+  &:hover { color: #1db954; }
+}
+
+.np-artist {
+  font-family: var(--font-mono);
+  font-size: 0.67rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Progress ── */
+.np-progress-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-top: 0.25rem;
+}
+
+.np-bar {
+  width: 100%; height: 2px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.np-bar-fill {
+  height: 100%;
+  background: #1db954;
+  border-radius: 999px;
+  transition: width 1s linear;
+}
+
+.np-times {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Idle pill ── */
+.np-idle-icon {
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+}
+
+.np-idle-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .np-card.playing { max-width: 180px; }
+  .np-artist { display: none; }
+  .np-progress-wrap { display: none; }
+}

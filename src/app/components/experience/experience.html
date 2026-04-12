@@ -1,0 +1,75 @@
+<section class="section" id="experience">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">Where I've <span class="accent">worked</span></h2>
+    </div>
+
+    <div class="exp-layout">
+      <div class="exp-tabs fade-in">
+        @for (exp of experiences; track exp.company; let i = $index) {
+          <button
+            class="tab-btn"
+            [class.active]="activeIndex === i"
+            (click)="setActive(i)">
+            <span class="tab-company">{{ exp.company }}</span>
+            <span class="tab-type" [class.intern]="exp.type === 'intern'">
+              {{ exp.type === 'intern' ? 'Internship' : 'Full-time' }}
+            </span>
+          </button>
+        }
+      </div>
+
+      <div class="exp-content fade-in">
+        @if (experiences.length > 0) {
+          <div class="exp-panel">
+            <div class="exp-header">
+              <div>
+                <h3 class="exp-role">
+                  {{ experiences[activeIndex].role }}
+                  <span class="accent">@ {{ experiences[activeIndex].company }}</span>
+                </h3>
+                <p class="exp-meta">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  {{ experiences[activeIndex].location }}
+                  <span class="meta-sep">·</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  {{ experiences[activeIndex].period }}
+                </p>
+              </div>
+              <span class="exp-badge" [class.intern]="experiences[activeIndex].type === 'intern'">
+                {{ experiences[activeIndex].type === 'intern' ? 'Internship' : 'Full-time' }}
+              </span>
+            </div>
+
+            <div class="projects-list">
+              @for (project of experiences[activeIndex].projects; track project.name) {
+                <div class="project-block">
+                  <h4 class="project-name">
+                    <span class="project-arrow">▸</span>
+                    {{ project.name }}
+                  </h4>
+                  <ul class="bullet-list">
+                    @for (bullet of project.bullets; track bullet) {
+                      <li>{{ bullet }}</li>
+                    }
+                  </ul>
+                </div>
+              }
+            </div>
+
+            <div class="skill-tags">
+              @for (skill of experiences[activeIndex].skills; track skill) {
+                <span class="tag">{{ skill }}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</section>

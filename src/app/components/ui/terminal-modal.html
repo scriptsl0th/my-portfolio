@@ -1,0 +1,64 @@
+<div class="terminal-overlay" (click)="onOverlayClick($event)">
+  <div class="terminal-window">
+
+    <!-- Title bar -->
+    <div class="terminal-titlebar">
+      <div class="tb-dots">
+        <button class="dot dot-red"    (click)="close.emit()" aria-label="Close"></button>
+        <button class="dot dot-yellow" aria-label="Minimise"></button>
+        <button class="dot dot-green"  aria-label="Maximise"></button>
+      </div>
+      <span class="tb-title">
+        {{ os.icon }} {{ os.label }} — terminal
+      </span>
+      <span class="tb-spacer"></span>
+    </div>
+
+    <!-- Terminal body -->
+    <div class="terminal-body">
+      @for (line of visibleLines; track $index) {
+
+        @if (line.type === 'blank') {
+          <div class="t-blank"></div>
+        }
+
+        @if (line.type === 'header') {
+          <div class="t-header">
+            <span class="t-hostname" [style.color]="line.color">{{ line.text }}</span>
+            <span class="t-separator" [style.color]="line.color">───────────────</span>
+          </div>
+        }
+
+        @if (line.type === 'prompt') {
+          <div class="t-prompt">
+            <span class="prompt-user" [style.color]="os.color">{{ os.hostname }}</span>
+            <span class="prompt-sep">:</span>
+            <span class="prompt-path">~</span>
+            <span class="prompt-dollar">$</span>
+            <span class="prompt-cmd">{{ line.text }}</span>
+            @if ($index === visibleLines.length - 1 && visibleLines.length === lines.length) {
+              <span class="cursor-blink">█</span>
+            }
+          </div>
+        }
+
+        @if (line.type === 'output') {
+          <div class="t-output">
+            @if (line.label) {
+              <span class="out-label" [style.color]="os.color">{{ line.label }}</span>
+              <span class="out-colon">:</span>
+            }
+            <span class="out-value">{{ line.value }}</span>
+          </div>
+        }
+
+      }
+    </div>
+
+    <!-- Footer hint -->
+    <div class="terminal-footer">
+      <span>Press <kbd>ESC</kbd> or click outside to close</span>
+    </div>
+
+  </div>
+</div>

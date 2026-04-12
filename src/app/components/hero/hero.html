@@ -1,0 +1,95 @@
+<section class="hero" id="hero">
+  <div class="hero-grid-overlay"></div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-top fade-in">
+        <span class="greeting">
+          <span class="mono-accent">$</span> Hello, world!
+        </span>
+      </div>
+
+      <h1 class="hero-name fade-in">
+        Aziz<br />
+        <span class="accent">Dridi</span>
+      </h1>
+
+      <div class="hero-role fade-in">
+        <span class="role-prefix">I'm a </span>
+        <span class="typed-wrapper">
+          <span class="typed">{{ typedText }}</span><span class="cursor" [class.blink]="showCursor">|</span>
+        </span>
+      </div>
+
+      <p class="hero-desc fade-in">
+        Backend Engineer from Tunisia with 2+ years of hands-on experience
+        designing scalable web platforms, distributed systems &amp; cloud infrastructure.
+        Delivered solutions serving <span class="accent">1,000+ users</span>.
+      </p>
+
+      <div class="hero-actions fade-in">
+        <button class="btn-primary" (click)="scrollToContact()">
+          Get In Touch
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+        <button class="btn-ghost" (click)="scrollToAbout()">
+          View Work
+        </button>
+      </div>
+
+      <div class="hero-meta fade-in">
+        <span class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+          Tunis, Tunisia
+        </span>
+        <span class="meta-divider">·</span>
+        <span class="meta-item available">
+          <span class="dot"></span>
+          Available for opportunities
+        </span>
+      </div>
+    </div>
+
+    <div class="hero-code fade-in">
+      <div class="code-window">
+        <div class="code-header">
+          <span class="dot-red"></span>
+          <span class="dot-yellow"></span>
+          <span class="dot-green"></span>
+          <span class="code-filename">developer.ts</span>
+        </div>
+        <pre class="code-body"><code><span class="kw">interface</span> <span class="type">Developer</span> &#123;
+  name:       <span class="str">'Aziz Dridi'</span>;
+  role:       <span class="str">'Backend Engineer'</span>;
+  experience: <span class="num">2</span><span class="op">+</span> <span class="str">'years'</span>;
+  location:   <span class="str">'Tunisia'</span>;
+  languages:  [
+    <span class="str">'Python'</span>, <span class="str">'Java'</span>,
+    <span class="str">'TypeScript'</span>, <span class="str">'JS'</span>
+  ];
+  frameworks: [
+    <span class="str">'Django'</span>, <span class="str">'Spring Boot'</span>,
+    <span class="str">'Angular'</span>, <span class="str">'React'</span>
+  ];
+  cloud:      [
+    <span class="str">'Docker'</span>, <span class="str">'Kubernetes'</span>,
+    <span class="str">'Kafka'</span>, <span class="str">'Redis'</span>
+  ];
+  impact:     <span class="str">'1000+ users served'</span>;
+&#125;
+
+<span class="comment">// Building scalable solutions</span>
+<span class="comment">// Ready for your next project?</span></code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint" (click)="scrollToAbout()">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>

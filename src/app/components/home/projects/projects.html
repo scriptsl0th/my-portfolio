@@ -1,0 +1,99 @@
+<section class="section" id="projects">
+  <div class="container">
+
+    <!-- Header row with nav arrows -->
+    <div class="section-header fade-in">
+      <div class="header-left">
+        <p class="section-label">Projects</p>
+        <h2 class="section-title">Things I've <span class="accent">built</span></h2>
+      </div>
+      <div class="slider-controls">
+        <button class="ctrl-btn" (click)="prev()" [disabled]="!canPrev()" aria-label="Previous">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        <span class="ctrl-count">
+          <span class="ctrl-current">{{ activeIndex() + 1 }}</span>
+          <span class="ctrl-sep">/</span>
+          <span class="ctrl-total">{{ projects.length }}</span>
+        </span>
+        <button class="ctrl-btn" (click)="next()" [disabled]="!canNext()" aria-label="Next">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider track -->
+    <div class="slider-wrap fade-in">
+      <div class="slider-track" #slider>
+        @for (project of projects; track project.title; let i = $index) {
+          <div class="project-card" [class.active]="activeIndex() === i" (click)="goTo(i)">
+
+            <div class="card-top">
+              <span class="project-category">{{ project.category }}</span>
+              @if (!project.isPrivate && project.url) {
+                <a [href]="project.url" target="_blank" rel="noopener" class="action-btn explore"
+                   (click)="$event.stopPropagation()">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+                    <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  Explore
+                </a>
+              } @else {
+                <span class="action-btn private">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                    <path d="M7 11V7a5 5 0 0110 0v4"/>
+                  </svg>
+                  Private
+                </span>
+              }
+            </div>
+
+            <h3 class="project-title">{{ project.title }}</h3>
+            <p class="project-desc">{{ project.description }}</p>
+
+            <div class="features-block">
+              <h4 class="block-label">KEY FEATURES</h4>
+              <ul class="features-list">
+                @for (f of project.features; track f) {
+                  <li><span class="feat-dot"></span>{{ f }}</li>
+                }
+              </ul>
+            </div>
+
+            <div class="tech-block">
+              <h4 class="block-label">TECHNOLOGIES</h4>
+              <div class="tech-tags">
+                @for (t of getTechSlice(project.technologies); track t) {
+                  <span class="tech-tag">{{ t }}</span>
+                }
+                @if (getOverflow(project.technologies) > 0) {
+                  <span class="tech-tag overflow">+{{ getOverflow(project.technologies) }}</span>
+                }
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Dot indicators -->
+    <div class="dot-indicators fade-in">
+      @for (project of projects; track project.title; let i = $index) {
+        <button
+          class="dot-btn"
+          [class.active]="activeIndex() === i"
+          (click)="goTo(i)"
+          [attr.aria-label]="'Go to ' + project.title">
+        </button>
+      }
+    </div>
+
+  </div>
+</section>

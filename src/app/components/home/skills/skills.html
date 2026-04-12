@@ -1,0 +1,37 @@
+<section class="section" id="skills">
+  <div class="container">
+    <div class="section-header fade-in">
+      <p class="section-label">Skills</p>
+      <h2 class="section-title">My <span class="accent">tech stack</span></h2>
+      <p class="section-sub">Technologies and tools I work with regularly</p>
+    </div>
+
+    <div class="categories">
+      @for (cat of categories; track cat.label) {
+        <div class="category fade-in">
+          <h3 class="category-label">
+            <span class="cat-index">{{ cat.index }}</span>
+            {{ cat.label }}
+          </h3>
+          <div class="skills-grid">
+            @for (skill of cat.skills; track skill.name) {
+              <div class="skill-card">
+                <div class="skill-icon-wrap">
+                  <img [src]="skill.icon" [alt]="skill.name" width="32" height="32" loading="lazy" />
+                </div>
+                <span class="skill-name">{{ skill.name }}</span>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="skills-footer fade-in">
+      <p class="footer-note">
+        <span class="mono-accent">// </span>
+        Also comfortable with: Git, Linux, Bash, Ansible, REST APIs, WebSockets, JWT, OWASP, HackTheBox
+      </p>
+    </div>
+  </div>
+</section>

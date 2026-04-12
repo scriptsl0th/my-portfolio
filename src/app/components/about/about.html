@@ -1,0 +1,63 @@
+<section class="section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-left fade-in">
+        <p class="section-label">About Me</p>
+        <h2 class="section-title">Building the <span class="accent">backend</span> of the modern web</h2>
+
+        <div class="about-text">
+          <p>
+            I'm a Backend Engineer based in Tunis, Tunisia, specializing in scalable distributed
+            systems, microservices, and cloud infrastructure. With 2+ years of professional
+            experience, I've delivered production systems used by thousands of users.
+          </p>
+          <p>
+            Currently pursuing an Engineering Degree in Cloud Computing at <span class="accent">ESPRIT</span>
+            while working professionally — because I believe learning never stops.
+            I hold an <span class="accent">Oracle Cloud Infrastructure</span> Foundations certification,
+            and I'm actively building my home lab with Kubernetes, OpenStack, and Ansible.
+          </p>
+          <p>
+            When I'm not coding backends, I explore DevSecOps on HackTheBox and build
+            trading tools with Pine Script. I care deeply about system observability,
+            security, and infrastructure that actually scales.
+          </p>
+        </div>
+
+        <div class="lang-row">
+          <span class="lang-badge">🇹🇳 Arabic</span>
+          <span class="lang-badge">🇫🇷 French</span>
+          <span class="lang-badge">🇬🇧 English C1</span>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <div class="stats-grid">
+          @for (stat of stats; track stat.label) {
+            <div class="stat-card fade-in">
+              <span class="stat-value">{{ stat.value }}</span>
+              <span class="stat-label">{{ stat.label }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="cert-list fade-in">
+          <h3 class="cert-title">Certifications & Education</h3>
+          @for (cert of certifications; track cert.name) {
+            <div class="cert-item">
+              <div class="cert-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <div>
+                <p class="cert-name">{{ cert.name }}</p>
+                <p class="cert-meta">{{ cert.issuer }} · {{ cert.year }}</p>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
