@@ -26,7 +26,7 @@ app.use('/api/contact',             contactRouter);
 
 // ── Serve Angular build in production ───────────────────
 if (isProd) {
-  const staticPath = path.join(__dirname, '..', 'dist', 'aziz-portfolio', 'browser');
+  const staticPath = path.join(__dirname, '..', 'dist', 'portfolio', 'browser');
   app.use(express.static(staticPath));
 
   // SPA fallback — all non-API routes → index.html

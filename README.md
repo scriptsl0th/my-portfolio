@@ -8,7 +8,7 @@ Modern dark-theme developer portfolio deployed as a static Angular frontend + Ve
 
 ```
 Vercel deployment
-├── dist/aziz-portfolio/browser/   ← Angular static files (served by Vercel CDN)
+├── dist/portfolio/browser/        ← Angular static files (served by Vercel CDN)
 ├── api/
 │   ├── spotify/now-playing.ts     ← GET  /api/spotify/now-playing  (serverless)
 │   └── contact/index.ts           ← POST /api/contact              (serverless)
@@ -25,7 +25,7 @@ Vercel deployment
 git init
 git add .
 git commit -m "init"
-gh repo create aziz-portfolio --public --push --source=.
+gh repo create my-portfolio --public --push --source=.
 ```
 
 ### 2. Import on Vercel
