@@ -72,7 +72,7 @@ npm run dev
 ## Spotify Setup (one-time)
 
 1. Create an app at https://developer.spotify.com/dashboard
-2. Add your redirect URI (e.g. `http://localhost:3001/callback` for local, your Vercel URL for prod)
+2. Add your redirect URI (e.g. `http://127.0.0.1:3001/callback` for local, your Vercel URL for prod)
 3. Fill `SPOTIFY_CLIENT_ID` and `SPOTIFY_CLIENT_SECRET` in `.env`
 4. Run the helper to get your refresh token:
    ```bash

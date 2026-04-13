@@ -7,6 +7,12 @@ interface SpotifyTokenResponse {
   expires_in: number;
 }
 
+interface SpotifyErrorResponse {
+  error?: string;
+  error_description?: string;
+  message?: string;
+}
+
 interface SpotifyCurrentlyPlaying {
   is_playing: boolean;
   item?: {
@@ -34,6 +40,10 @@ let tokenExpiry = 0;
 async function getAccessToken(): Promise<string> {
   if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
 
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
+    throw new Error('Spotify is not configured: set SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN');
+  }
+
   const basic = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64');
 
   const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -48,9 +58,26 @@ async function getAccessToken(): Promise<string> {
     }),
   });
 
-  if (!res.ok) throw new Error(`Spotify token error: ${res.status}`);
+  if (!res.ok) {
+    const errorBody = (await res.text()).trim();
+    let details = errorBody;
+
+    if (errorBody) {
+      try {
+        const parsed = JSON.parse(errorBody) as SpotifyErrorResponse;
+        details = parsed.error_description ?? parsed.error ?? errorBody;
+      } catch {
+        // Keep the raw body when Spotify does not return JSON.
+      }
+    }
+
+    throw new Error(`Spotify token error: ${res.status}${details ? ` - ${details}` : ''}`);
+  }
 
   const data: SpotifyTokenResponse = await res.json();
+  if (!data.access_token) {
+    throw new Error('Spotify token error: missing access token in response');
+  }
   cachedToken = data.access_token;
   tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
   return cachedToken;
@@ -68,7 +95,10 @@ export async function getNowPlaying() {
     return { isPlaying: false };
   }
 
-  if (!res.ok) throw new Error(`Spotify API error: ${res.status}`);
+  if (!res.ok) {
+    const errorBody = (await res.text()).trim();
+    throw new Error(`Spotify API error: ${res.status}${errorBody ? ` - ${errorBody}` : ''}`);
+  }
 
   const data: SpotifyCurrentlyPlaying = await res.json();
 

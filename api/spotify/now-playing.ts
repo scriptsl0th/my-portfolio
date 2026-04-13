@@ -4,10 +4,20 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 let cachedToken: string | null = null;
 let tokenExpiry = 0;
 
+interface SpotifyErrorResponse {
+  error?: string;
+  error_description?: string;
+  message?: string;
+}
+
 async function getAccessToken(): Promise<string> {
   if (cachedToken && Date.now() < tokenExpiry) return cachedToken;
 
   const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = process.env;
+  if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
+    throw new Error('Spotify is not configured: set SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, and SPOTIFY_REFRESH_TOKEN');
+  }
+
   const basic = Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString('base64');
 
   const res = await fetch('https://accounts.spotify.com/api/token', {
@@ -22,9 +32,26 @@ async function getAccessToken(): Promise<string> {
     }),
   });
 
-  if (!res.ok) throw new Error(`Spotify token error: ${res.status}`);
+  if (!res.ok) {
+    const errorBody = (await res.text()).trim();
+    let details = errorBody;
+
+    if (errorBody) {
+      try {
+        const parsed = JSON.parse(errorBody) as SpotifyErrorResponse;
+        details = parsed.error_description ?? parsed.error ?? errorBody;
+      } catch {
+        // Keep raw text when Spotify does not return JSON.
+      }
+    }
+
+    throw new Error(`Spotify token error: ${res.status}${details ? ` - ${details}` : ''}`);
+  }
 
   const data: any = await res.json();
+  if (!data?.access_token) {
+    throw new Error('Spotify token error: missing access token in response');
+  }
   cachedToken = data.access_token;
   tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
   return cachedToken!;
@@ -55,7 +82,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.json({ isPlaying: false });
     }
 
-    if (!spotifyRes.ok) throw new Error(`Spotify API ${spotifyRes.status}`);
+    if (!spotifyRes.ok) {
+      const errorBody = (await spotifyRes.text()).trim();
+      throw new Error(`Spotify API ${spotifyRes.status}${errorBody ? ` - ${errorBody}` : ''}`);
+    }
 
     const data: any = await spotifyRes.json();
 
@@ -72,7 +102,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       durationMs:  data.item.duration_ms,
     });
   } catch (err) {
-    console.error('[Spotify]', err);
-    return res.status(500).json({ error: 'Failed to fetch now playing' });
+    const message = err instanceof Error ? err.message : 'Failed to fetch now playing';
+    console.error('[Spotify]', message);
+
+    if (message.includes('invalid_grant') || message.includes('Invalid refresh token')) {
+      return res.status(401).json({ error: message });
+    }
+
+    return res.status(500).json({ error: message });
   }
 }
