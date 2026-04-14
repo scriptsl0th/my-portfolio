@@ -35,7 +35,7 @@ export class ProjectsComponent {
         'LiveKit & Socket.IO Integration',
       ],
       technologies: ['React.js', 'Redux', 'Node.js', 'PostgreSQL', 'Docker', 'Keycloak', 'Socket.IO', 'LiveKit'],
-      url: undefined,
+      url: "https://www.peoplmap.com/",
       isPrivate: false,
     },
     {
