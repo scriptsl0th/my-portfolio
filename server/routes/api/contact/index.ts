@@ -64,10 +64,11 @@ router.post('/', async (req: Request, res: Response) => {
     SMTP_PASS,
     SMTP_FROM_EMAIL,
     SMTP_FROM_NAME  = 'Aziz Dridi',
+    MY_INBOX,
   } = process.env;
 
-  if (!SMTP_USER || !SMTP_PASS || !SMTP_FROM_EMAIL) {
-    console.warn('[Contact] SMTP not fully configured — skipping send');
+  if (!SMTP_USER || !SMTP_PASS || !SMTP_FROM_EMAIL || !MY_INBOX) {
+    console.warn('[Contact] SMTP or MY_INBOX not fully configured — skipping send');
     return res.json({ ok: true, note: 'SMTP not configured' });
   }
 
@@ -87,7 +88,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     await transporter.sendMail({
       from,
-      to:      SMTP_FROM_EMAIL,
+      to:      MY_INBOX,
       replyTo: `"${name}" <${email}>`,
       subject: `[Portfolio] New message from ${name}`,
       html: `

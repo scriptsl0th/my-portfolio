@@ -16,6 +16,25 @@ export class PortfolioService {
   getExperiences(): Experience[] {
     return [
       {
+        role: 'Software Engineer',
+        company: 'GenZ Builders',
+        location: 'Tunis, Tunisia',
+        period: 'Feb 2026 – Present',
+        type: 'full-time',
+        projects: [
+          {
+            name: 'Core Platform',
+            bullets: [
+              'Engineered and refactored core Next.js frontend modules, improving component reusability and reducing page load times through server-side rendering and code-splitting optimizations.',
+              'Refactored Node.js/Express.js backend services for improved maintainability, introducing a layered architecture that decoupled business logic from routing and data access layers.',
+              'Boosted performance on high-frequency endpoints by integrating Redis caching, significantly reducing database load across critical service routes.',
+              'Spearheaded production deployments using Docker and Docker Compose, configuring Nginx as a reverse proxy to manage routing, SSL termination, and static asset delivery.',
+            ],
+          },
+        ],
+        skills: ['Next.js', 'Node.js', 'Express.js', 'Redis', 'Docker', 'Docker Compose', 'Nginx', 'TypeScript'],
+      },
+      {
         role: 'Software Developer',
         company: 'AdvyTeam',
         location: 'Lac 1, Tunisia',
