@@ -13,11 +13,15 @@ export class AboutMeComponent implements OnInit {
   github = inject(GithubApiService);
 
   certifications = [
-    { name: 'Oracle Cloud Infrastructure Foundations Associate', issuer: 'Oracle', year: '2024' },
+    //{ name: 'AZ-104: Azure Administrator', issuer: 'Microsoft', year: 'In Progress' },
+    //{ name: 'AZ-500: Azure Security Engineer', issuer: 'Microsoft', year: 'In Progress' },
+    { name: 'Oracle Cloud Infrastructure Foundations Associate', issuer: 'Oracle', year: '2025' },
     { name: 'Engineering Degree — Cloud Computing', issuer: 'ESPRIT', year: 'In Progress' },
   ];
 
-  ngOnInit(): void { this.github.fetchStats(); }
+  ngOnInit(): void {
+    this.github.fetchStats();
+  }
 
   get stats() {
     return [

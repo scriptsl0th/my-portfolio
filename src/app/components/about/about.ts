@@ -17,7 +17,9 @@ export class AboutComponent {
   ];
 
   certifications = [
-    { name: 'Oracle Cloud Infrastructure Foundations Associate', issuer: 'Oracle', year: '2024' },
+    //{ name: 'AZ-104: Azure Administrator', issuer: 'Microsoft', year: 'In Progress' },
+    //{ name: 'AZ-500: Azure Security Engineer', issuer: 'Microsoft', year: 'In Progress' },
+    { name: 'Oracle Cloud Infrastructure Foundations Associate', issuer: 'Oracle', year: '2025' },
     { name: 'Engineering Degree - Cloud Computing', issuer: 'ESPRIT', year: 'In Progress' },
   ];
 }
