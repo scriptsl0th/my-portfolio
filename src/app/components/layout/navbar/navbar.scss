@@ -1,6 +1,9 @@
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 90;
   padding: 1.25rem 0; transition: var(--transition);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: padding, background-color, border-bottom;
   &.scrolled {
     background: rgba(10,10,11,0.92);
     backdrop-filter: blur(16px);
