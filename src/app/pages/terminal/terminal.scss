@@ -1,0 +1,355 @@
+.terminal-page {
+  background: #0a0a0b;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  cursor: text;
+}
+
+/* ── CRT Frame ────────────────────────────── */
+.crt-frame {
+  width: 100%;
+  max-width: 960px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(0, 255, 160, 0.08),
+    0 0 60px rgba(0, 255, 160, 0.06),
+    0 24px 80px rgba(0, 0, 0, 0.6);
+  animation: crtPowerOn 0.5s ease-out;
+}
+
+/* ── Terminal Header (macOS-style bar) ─────── */
+.terminal-header {
+  background: #1a1e24;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  &.red {
+    background: #ff5f57;
+  }
+  &.yellow {
+    background: #ffbd2e;
+  }
+  &.green {
+    background: #28c840;
+  }
+}
+
+.header-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.06em;
+}
+
+.header-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.header-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+  }
+  &.close:hover {
+    background: rgba(255, 80, 80, 0.3);
+    color: #ff5f57;
+  }
+}
+
+/* ── Terminal Body ─────────────────────────── */
+.terminal-body {
+  background: #0d1117;
+  padding: 1.5rem;
+  min-height: 520px;
+  max-height: 72vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 160, 0.3) transparent;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 255, 160, 0.3);
+    border-radius: 2px;
+  }
+}
+
+/* ── Scanlines Overlay ─────────────────────── */
+.scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.12) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 1;
+  animation: scanlineShift 8s linear infinite;
+}
+
+/* ── Output Lines ──────────────────────────── */
+.line {
+  position: relative;
+  z-index: 2;
+
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.55;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+.line--input pre {
+  color: #e2e8f0;
+}
+
+.line--output pre {
+  color: #3fb950;
+}
+
+.line--ascii pre {
+  color: #00d4aa;
+  text-shadow: 0 0 6px rgba(0, 212, 170, 0.4);
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
+.line--error pre {
+  color: #f85149;
+  text-shadow: 0 0 4px rgba(248, 81, 73, 0.3);
+}
+
+.line--system pre {
+  color: #8b949e;
+}
+
+/* ── Command-specific classes ──────────────── */
+.cmd-help pre {
+  color: #58a6ff !important;
+}
+
+.highlight pre {
+  color: #00d4aa !important;
+  text-shadow: 0 0 4px rgba(0, 212, 170, 0.3);
+}
+
+.info pre {
+  color: #9a9791 !important;
+}
+
+.project pre {
+  color: #d29922 !important;
+}
+
+.skill-bar pre {
+  color: #3fb950 !important;
+}
+
+.blog-title pre {
+  color: #bc8cff !important;
+}
+
+.article-text pre {
+  color: #c9d1d9 !important;
+}
+
+/* ── Input Line ────────────────────────────── */
+.input-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 2;
+  margin-top: 0.25rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.prompt {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: #00d4aa;
+  white-space: nowrap;
+  text-shadow: 0 0 4px rgba(0, 212, 170, 0.3);
+  flex-shrink: 0;
+}
+
+.input-wrapper {
+  flex: 1;
+  position: relative;
+  display: block;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.terminal-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e2e8f0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  caret-color: transparent;
+  letter-spacing: 0.02em;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+  resize: none;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  box-sizing: border-box;
+}
+
+.cursor-blink {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 8px;
+  height: 16px;
+  background: #00d4aa;
+  animation: blink 1s step-end infinite;
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(0, 212, 170, 0.5);
+  pointer-events: none;
+}
+
+/* ── Hint Bar ──────────────────────────────── */
+.hint {
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+  letter-spacing: 0.04em;
+
+  kbd {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin: 0 1px;
+  }
+
+  code {
+    color: #00d4aa;
+    background: rgba(0, 212, 170, 0.08);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+  }
+}
+
+/* ── Animations ────────────────────────────── */
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes crtPowerOn {
+  0% {
+    transform: scaleY(0.005) scaleX(0.2);
+    filter: brightness(3);
+  }
+  40% {
+    transform: scaleY(0.005) scaleX(1);
+    filter: brightness(2);
+  }
+  60% {
+    transform: scaleY(1) scaleX(1);
+    filter: brightness(1.5);
+  }
+  100% {
+    transform: scaleY(1) scaleX(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes scanlineShift {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100px;
+  }
+}
+
+/* ── Responsive ────────────────────────────── */
+@media (max-width: 768px) {
+  .terminal-page {
+    padding: 0.75rem;
+  }
+  .crt-frame {
+    border-radius: 10px;
+  }
+  .terminal-body {
+    padding: 1rem;
+    min-height: 400px;
+    max-height: 80vh;
+  }
+  .line pre,
+  .prompt,
+  .terminal-input {
+    font-size: 0.72rem;
+  }
+  .line--ascii pre {
+    font-size: 0.5rem;
+  }
+  .hint {
+    font-size: 0.6rem;
+  }
+}

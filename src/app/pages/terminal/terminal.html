@@ -1,0 +1,73 @@
+<div class="terminal-page" (click)="focusInput()">
+  <!-- CRT Frame -->
+  <div class="crt-frame">
+    <!-- Terminal Header Bar -->
+    <div class="terminal-header">
+      <div class="header-dots">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <span class="header-title">aziz@debian-lab: ~</span>
+      <div class="header-actions">
+        <button class="header-btn" (click)="$event.stopPropagation()" aria-label="Minimize">
+          ─
+        </button>
+        <button class="header-btn" (click)="$event.stopPropagation()" aria-label="Maximize">
+          □
+        </button>
+        <button class="header-btn close" (click)="$event.stopPropagation()" aria-label="Close">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Terminal Body -->
+    <div class="terminal-body" #terminalBody>
+      <!-- Scanlines Overlay -->
+      <div class="scanlines"></div>
+
+      <!-- Output Lines -->
+      @for (line of lines(); track $index) {
+      <div
+        class="line"
+        [ngClass]="{
+          'line--input': line.type === 'input',
+          'line--output': line.type === 'output',
+          'line--ascii': line.type === 'ascii',
+          'line--error': line.type === 'error',
+          'line--system': line.type === 'system'
+        }"
+        [class]="line.class || ''"
+      >
+        <pre>{{ line.text }}</pre>
+      </div>
+      }
+
+      <!-- Input Line -->
+      <div class="input-line">
+        <span class="prompt">aziz@debian-lab:~$</span>
+        <div class="input-wrapper">
+          <textarea
+            #terminalInput
+            rows="1"
+            class="terminal-input"
+            [value]="currentInput()"
+            (input)="currentInput.set($any($event.target).value); updateCursorPosition()"
+            (keydown)="onInputKeydown($event)"
+            spellcheck="false"
+            autocomplete="off"
+            autofocus
+          ></textarea>
+          <span #cursorBlink class="cursor-blink"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Hint -->
+  <p class="hint">
+    Press <kbd>↑</kbd> <kbd>↓</kbd> for history · <kbd>Tab</kbd> to autocomplete · type
+    <code>exit</code> to leave
+  </p>
+</div>

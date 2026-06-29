@@ -1,0 +1,179 @@
+<app-navbar></app-navbar>
+
+<main class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>System Dashboard</h1>
+    <p class="subtitle">Real-time monitoring & metrics</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- System Metrics Overview -->
+    <section class="metrics-section">
+      <h2>System Metrics</h2>
+      <div class="metrics-grid">
+        <!-- CPU Usage -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>CPU Usage</h3>
+            <span class="metric-value">{{ cpuUsage() }}%</span>
+          </div>
+          <div class="metric-chart">
+            <svg viewBox="0 0 200 40" class="mini-chart">
+              <defs>
+                <linearGradient id="cpu-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style="stop-color: var(--color-terminal-green); stop-opacity: 0.3;" />
+                  <stop offset="100%" style="stop-color: var(--color-terminal-green); stop-opacity: 0;" />
+                </linearGradient>
+              </defs>
+              <path [attr.d]="getCpuChartAreaPath()" fill="url(#cpu-gradient)" />
+              <path [attr.d]="getCpuChartPath()" stroke="var(--color-terminal-green)" stroke-width="2" fill="none" />
+            </svg>
+          </div>
+          <div class="metric-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="cpuUsage()"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Memory Usage -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>Memory</h3>
+            <span class="metric-value">{{ memoryUsage() }}%</span>
+          </div>
+          <div class="metric-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="memoryUsage()"></div>
+            </div>
+          </div>
+          <p class="metric-note">{{ (memoryUsage() * 2.56) | number: '1.0-0' }} GB / 10 GB</p>
+        </div>
+
+        <!-- Disk Usage -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>Disk</h3>
+            <span class="metric-value">{{ diskUsage() }}%</span>
+          </div>
+          <div class="metric-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="diskUsage()"></div>
+            </div>
+          </div>
+          <p class="metric-note">{{ (diskUsage() * 1.86) | number: '1.0-0' }} GB / 1.86 TB</p>
+        </div>
+
+        <!-- Network -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>Network</h3>
+            <span class="metric-unit">Mbps</span>
+          </div>
+          <div class="network-stats">
+            <div class="network-stat">
+              <span class="label">↓ In</span>
+              <span class="value">{{ networkIn() }}</span>
+            </div>
+            <div class="network-stat">
+              <span class="label">↑ Out</span>
+              <span class="value">{{ networkOut() }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Uptime -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>Uptime</h3>
+          </div>
+          <p class="metric-value large">{{ systemUptime() }}</p>
+        </div>
+
+        <!-- Total Requests -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <h3>Requests (24h)</h3>
+          </div>
+          <p class="metric-value large">{{ totalRequests() | number }}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Containers -->
+    <section class="containers-section">
+      <h2>Containers <span class="badge">{{ runningContainers() }}/{{ totalContainers() }} Running</span></h2>
+      <div class="containers-list">
+        <div class="container-item" *ngFor="let container of containers()">
+          <div class="container-info">
+            <h3>{{ container.name }}</h3>
+            <div class="status-badge" [style.backgroundColor]="getStatusColor(container.status)">
+              {{ container.status }}
+            </div>
+          </div>
+          <div class="container-metrics">
+            <div class="metric">
+              <span class="label">CPU</span>
+              <span class="value">{{ container.cpu }}%</span>
+            </div>
+            <div class="metric">
+              <span class="label">Memory</span>
+              <span class="value">{{ container.memory }}MB</span>
+            </div>
+            <div class="metric">
+              <span class="label">Port</span>
+              <span class="value">{{ container.port }}</span>
+            </div>
+            <div class="metric">
+              <span class="label">Uptime</span>
+              <span class="value">{{ container.uptime }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pipeline -->
+    <section class="pipeline-section">
+      <h2>CI/CD Pipeline</h2>
+      <div class="pipeline-info">
+        <div class="info-item">
+          <span class="label">Branch</span>
+          <span class="value">{{ pipelineBranch() }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Commit</span>
+          <span class="value">{{ pipelineCommit() }}</span>
+        </div>
+      </div>
+      <div class="pipeline-stages">
+        <div class="stage" *ngFor="let stage of pipelineStages()">
+          <div class="stage-header">
+            <div class="stage-dot" [style.backgroundColor]="getStatusColor(stage.status)"></div>
+            <span class="stage-name">{{ stage.name }}</span>
+          </div>
+          <div class="stage-status">
+            <span [ngClass]="'status-' + stage.status">{{ stage.status }}</span>
+            <span class="duration" *ngIf="stage.duration">({{ stage.duration }})</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logs -->
+    <section class="logs-section">
+      <h2>System Logs</h2>
+      <div class="logs-container">
+        <div class="log-entry" *ngFor="let log of logs()" [ngClass]="getLogLevelClass(log.level)">
+          <span class="timestamp">{{ log.timestamp }}</span>
+          <span class="level">{{ log.level }}</span>
+          <span class="source">[{{ log.source }}]</span>
+          <span class="message">{{ log.message }}</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<app-back-to-top></app-back-to-top>
+<app-footer></app-footer>
