@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
   selector: 'app-reading-progress',
   standalone: true,
   imports: [CommonModule],
-  template: `<div class="reading-bar" [style.width.%]="progress()"></div>`,
+  template: `<div class="reading-bar" [style.transform]="'scaleX(' + (progress() / 100) + ')'"></div>`,
   styles: [`
     .reading-bar {
-      position: fixed; top: 0; left: 0; height: 2px;
+      position: fixed; top: 0; left: 0; right: 0; height: 2px;
       background: var(--color-accent);
-      z-index: 200; transition: width 0.1s linear;
+      z-index: 200; transform-origin: left;
       box-shadow: 0 0 8px var(--color-accent-glow);
     }
   `],

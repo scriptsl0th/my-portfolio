@@ -1,0 +1,172 @@
+<app-reading-progress />
+<app-navbar />
+
+<main class="blog-detail-page" *ngIf="post() as activePost">
+  <div class="container section">
+    <!-- Back to Blogs Navigation -->
+    <a [routerLink]="['/blog']" class="back-link fade-in">
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+      >
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Back to logs</span>
+    </a>
+
+    <!-- Article Header -->
+    <header class="article-header fade-in">
+      <div class="article-meta">
+        <span class="category">{{ activePost.category }}</span>
+        <span class="meta-dot">·</span>
+        <span class="date">{{ activePost.publishedAt }}</span>
+        <span class="meta-dot">·</span>
+        <span class="read-time">{{ activePost.readTime }}</span>
+      </div>
+      <h1 class="article-title">{{ activePost.title }}</h1>
+      <p class="article-excerpt">{{ activePost.excerpt }}</p>
+
+      <!-- Mode Toggle -->
+      <div class="mode-toggle-wrapper">
+        <button
+          class="mode-toggle"
+          (click)="toggleMode()"
+          [attr.aria-label]="isTerminalMode() ? 'Switch to standard mode' : 'Switch to terminal mode'"
+        >
+          <span class="toggle-option" [class.active]="!isTerminalMode()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            Standard
+          </span>
+          <span class="toggle-option" [class.active]="isTerminalMode()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+            Terminal
+          </span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Reader -->
+    @if (!isTerminalMode()) {
+    <article class="article-content fade-in" [innerHTML]="processedContent()"></article>
+    } @else {
+    <div class="terminal-reader fade-in">
+      <div class="terminal-header">
+        <div class="terminal-buttons">
+          <span class="terminal-btn close"></span>
+          <span class="terminal-btn minimize"></span>
+          <span class="terminal-btn maximize"></span>
+        </div>
+        <div class="terminal-title">aziz@debian-lab: cat {{ activePost.slug }}.md</div>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-prompt">aziz@debian-lab:~/blog$</div>
+        <div class="terminal-command">cat {{ activePost.slug }}.md</div>
+        <div class="terminal-output">
+          <h1>{{ activePost.title }}</h1>
+          <div class="terminal-meta">
+            <span>Category: {{ activePost.category }}</span>
+            <span>Published: {{ activePost.publishedAt }}</span>
+            <span>Read Time: {{ activePost.readTime }}</span>
+          </div>
+          <div class="terminal-divider">
+            ────────────────────────────────────────────────────────────────
+          </div>
+          <div class="terminal-text">{{ terminalContent() }}</div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Article Footer (Tags and Shares) -->
+    <footer class="article-footer fade-in">
+      <div class="article-tags">
+        @for (tag of activePost.tags; track tag) {
+        <span class="tag">#{{ tag }}</span>
+        }
+      </div>
+    </footer>
+
+    <!-- Next & Previous Navigation Panels -->
+    <div class="adjacent-nav fade-in" *ngIf="adjacentPosts().next || adjacentPosts().prev">
+      <!-- Previous Post -->
+      <div
+        class="adjacent-card prev"
+        *ngIf="adjacentPosts().prev as prevPost"
+        [routerLink]="['/blog', prevPost.slug]"
+      >
+        <span class="direction">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Previous Log
+        </span>
+        <h4 class="adjacent-title">{{ prevPost.title }}</h4>
+      </div>
+
+      <!-- Spacer if prev is missing -->
+      <div class="adjacent-spacer" *ngIf="!adjacentPosts().prev"></div>
+
+      <!-- Next Post -->
+      <div
+        class="adjacent-card next"
+        *ngIf="adjacentPosts().next as nextPost"
+        [routerLink]="['/blog', nextPost.slug]"
+      >
+        <span class="direction">
+          Next Log
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </span>
+        <h4 class="adjacent-title">{{ nextPost.title }}</h4>
+      </div>
+    </div>
+  </div>
+</main>
+
+<app-footer />
+<app-back-to-top />
