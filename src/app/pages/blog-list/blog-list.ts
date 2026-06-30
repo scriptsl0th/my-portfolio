@@ -49,10 +49,10 @@ export class BlogListComponent implements OnInit {
     const allPosts = this.blogService.getPosts();
 
     return allPosts.filter((post) => {
-      // Category filter
-      const categoryMatch = !cat || cat === 'All' || post.category === cat;
+      // Category filter: if no category selected (null), show all
+      const categoryMatch = !cat || post.category === cat;
 
-      // Search filter
+      // Search filter: if no query, show all
       const searchMatch =
         !query ||
         post.title.toLowerCase().includes(query) ||

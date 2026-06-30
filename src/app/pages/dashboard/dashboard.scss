@@ -364,7 +364,32 @@
     border-radius: 8px;
     font-family: 'Courier New', monospace;
     font-size: 0.85rem;
-    overflow: hidden;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    // Custom scrollbar styling
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: var(--color-background-tertiary);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--color-border);
+      border-radius: 4px;
+
+      &:hover {
+        background: var(--color-accent);
+      }
+    }
+
+    // Firefox scrollbar
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) var(--color-background-tertiary);
   }
 }
 
@@ -470,6 +495,10 @@
   .container-metrics {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .logs-container {
+    max-height: 300px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -499,5 +528,22 @@
 
   .container-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .logs-container {
+    max-height: 250px;
+    font-size: 0.75rem;
+  }
+
+  .log-entry {
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    .timestamp,
+    .level,
+    .source {
+      min-width: auto;
+    }
   }
 }
